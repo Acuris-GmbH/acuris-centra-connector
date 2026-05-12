@@ -1,0 +1,16 @@
+{
+  "accuracy_type": "rooftop",
+  "city": "SAN FRANCISCO",
+  "country": "usa",
+  "distance_m": 40,
+  "hno": "1510",
+  "input_corrected": false,
+  "lat": 37.7752,
+  "lng": -122.4196,
+  "match_score": 1.0,
+  "match_type": "rooftop",
+  "query": { "lat": 37.7749, "lng": -122.4194, "radius_m": 50 },
+  "state": "CA",
+  "street": "MARKET ST",
+  "zip": "94102"
+}

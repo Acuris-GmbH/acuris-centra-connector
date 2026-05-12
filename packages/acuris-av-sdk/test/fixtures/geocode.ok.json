@@ -1,0 +1,17 @@
+{
+  "accuracy_type": "street_interpolated",
+  "city": "SAN FRANCISCO",
+  "country": "usa",
+  "formatted_address": "100 Main St\nSan Francisco, CA  94105\nUSA",
+  "hno": "100",
+  "house_number_not_found": true,
+  "input_corrected": false,
+  "lat": 37.79215,
+  "lng": -122.39535,
+  "match_components": { "city": true, "house_number": false, "state": true, "street": true, "zip": true },
+  "match_score": 0.8,
+  "match_type": "interpolated",
+  "postcode": "94105",
+  "state": "CA",
+  "street": "MAIN ST"
+}

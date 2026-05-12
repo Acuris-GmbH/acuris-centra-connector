@@ -1,0 +1,32 @@
+{
+  "accuracy_type": "street_interpolated",
+  "confidence": 1.0,
+  "confidence_level": "C",
+  "corrections": [],
+  "input_corrected": false,
+  "lat": 37.79215,
+  "lng": -122.39535,
+  "match_components": { "city": true, "house_number": false, "state": true, "street": true, "zip": true },
+  "match_details": { "city": true, "house_number": false, "postcode": true, "postcode_corrected": false, "state": true, "street": true },
+  "match_score": 0.8,
+  "match_type": "interpolated",
+  "parsed": {
+    "city": "San Francisco",
+    "country": "usa",
+    "house_number": "100",
+    "postcode": "94105",
+    "state": "CA",
+    "street": "Main St"
+  },
+  "standardized": {
+    "city": "SAN FRANCISCO",
+    "country": "usa",
+    "formatted_address": "100 Main St\nSan Francisco, CA  94105\nUSA",
+    "house_number": "100",
+    "postcode": "94105",
+    "state": "CA",
+    "street": "MAIN ST"
+  },
+  "status": "V1",
+  "house_number_not_found": true
+}
