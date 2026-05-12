@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   AcurisAddressInput,
   AcurisAddressValidator,
+  hitToDisplay,
   type SuggestionHit,
 } from "@acuris-geo/centra-checkout";
 
@@ -65,7 +66,9 @@ export default function Checkout() {
         value={search}
         onChange={(v) => {
           setSearch(v);
-          setPicked(null);
+          // The pick path also fires this onChange (with the picked display
+          // string). Only treat divergent values as "user typed" → clear.
+          if (picked && v !== hitToDisplay(picked)) setPicked(null);
         }}
         onSelect={(hit) => setPicked(hit)}
         debounceMs={200}
