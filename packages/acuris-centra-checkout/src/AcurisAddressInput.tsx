@@ -57,7 +57,10 @@ export const AcurisAddressInput = forwardRef<HTMLInputElement, AcurisAddressInpu
     };
 
     const pick = (hit: SuggestionHit) => {
-      onChange(hit.formatted_address ?? formatHit(hit));
+      // formatted_address is multi-line ("Street 1\nPostcode City\nCOUNTRY").
+      // <input> silently strips newlines on display, smashing tokens together,
+      // so always present a single-line, comma-separated form to onChange.
+      onChange(hitToDisplay(hit));
       onSelect?.(hit);
       setIsOpen(false);
       setHighlight(-1);
@@ -151,4 +154,22 @@ function formatHit(h: SuggestionHit): string {
   ]
     .filter(Boolean)
     .join(" — ");
+}
+
+/**
+ * Single-line display string for a suggestion. Prefer Acuris's
+ * `formatted_address` (which is multi-line) flattened to commas, falling back
+ * to a synthesised form when not present.
+ *
+ * Exported so demo apps can detect "input value still matches the picked
+ * suggestion" without re-deriving the format themselves.
+ */
+export function hitToDisplay(hit: SuggestionHit): string {
+  if (hit.formatted_address) {
+    return hit.formatted_address
+      .replace(/\r?\n+/g, ", ")
+      .replace(/\s*,\s*,\s*/g, ", ")
+      .trim();
+  }
+  return formatHit(hit);
 }

@@ -8,7 +8,7 @@
  * endpoints (see `AcurisEndpoints`), which forward to Acuris with the API
  * key attached server-side.
  */
-export { AcurisAddressInput } from "./AcurisAddressInput.js";
+export { AcurisAddressInput, hitToDisplay } from "./AcurisAddressInput.js";
 export { AcurisAddressValidator } from "./AcurisAddressValidator.js";
 export { useAcurisValidation } from "./useAcurisValidation.js";
 export { useAcurisSuggest } from "./useAcurisSuggest.js";
