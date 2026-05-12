@@ -11,12 +11,11 @@ const ENDPOINTS = {
   suggest: "/api/acuris/suggest",
 };
 
+// Match the country set on the acuris-geo.com homepage demo.
 const COUNTRIES = [
-  { code: "deu", label: "Germany" },
   { code: "usa", label: "United States" },
-  { code: "gbr", label: "United Kingdom" },
-  { code: "fra", label: "France" },
-  { code: "swe", label: "Sweden" },
+  { code: "deu", label: "Germany" },
+  { code: "nld", label: "Netherlands" },
 ];
 
 export default function Checkout() {
