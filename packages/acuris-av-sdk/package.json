@@ -1,0 +1,60 @@
+{
+  "name": "@acuris-geo/av-sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for the Acuris Address Validation & Geocoding API (api.acuris-geo.com).",
+  "keywords": [
+    "acuris",
+    "address-validation",
+    "geocoding",
+    "reverse-geocoding",
+    "centra",
+    "headless-commerce",
+    "typescript",
+    "sdk"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node ./build-cjs.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "license": "MIT",
+  "author": "Acuris GmbH <engineering@acuris-geo.com>",
+  "homepage": "https://github.com/Acuris-GmbH/acuris-centra-connector/tree/main/packages/acuris-av-sdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Acuris-GmbH/acuris-centra-connector.git",
+    "directory": "packages/acuris-av-sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/Acuris-GmbH/acuris-centra-connector/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@vitest/coverage-v8": "^2.1.4",
+    "typescript": "^5.5.4",
+    "vitest": "^2.1.4"
+  }
+}
