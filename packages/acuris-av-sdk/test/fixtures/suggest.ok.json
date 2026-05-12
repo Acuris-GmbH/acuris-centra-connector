@@ -1,0 +1,26 @@
+{
+  "suggestions": [
+    {
+      "city": "WATSONVILLE",
+      "country": "usa",
+      "formatted_address": "100 Main\nWatsonville, CA  95076\nUSA",
+      "house_number": "100",
+      "lat": 36.9064,
+      "lng": -121.7521,
+      "postcode": "95076",
+      "state": "CA",
+      "street": "MAIN"
+    },
+    {
+      "city": "NICHOLLS",
+      "country": "usa",
+      "formatted_address": "100 Main\nNicholls, GA  31554\nUSA",
+      "house_number": "100",
+      "lat": 31.5142,
+      "lng": -82.6362,
+      "postcode": "31554",
+      "state": "GA",
+      "street": "MAIN"
+    }
+  ]
+}
