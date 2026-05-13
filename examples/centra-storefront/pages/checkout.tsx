@@ -2,9 +2,25 @@ import { useState } from "react";
 import {
   AcurisAddressInput,
   AcurisAddressValidator,
-  hitToDisplay,
   type SuggestionHit,
 } from "@acuris-geo/centra-checkout";
+
+// Local copy of the package's `hitToDisplay` helper. The version we depend
+// on (0.1.0) doesn't yet export it; bump to ^0.1.1 to drop this duplicate.
+function hitToDisplay(hit: SuggestionHit): string {
+  if (hit.formatted_address) {
+    return hit.formatted_address
+      .replace(/\r?\n+/g, ", ")
+      .replace(/\s*,\s*,\s*/g, ", ")
+      .trim();
+  }
+  return [
+    [hit.house_number, hit.street].filter(Boolean).join(" "),
+    [hit.city, hit.state, hit.postcode].filter(Boolean).join(", "),
+  ]
+    .filter(Boolean)
+    .join(" — ");
+}
 
 const ENDPOINTS = {
   validate: "/api/acuris/validate",
@@ -64,10 +80,17 @@ export default function Checkout() {
         country={country}
         value={search}
         onChange={(v) => {
-          setSearch(v);
+          // Defensive flatten: 0.1.0 of the component passes a multi-line
+          // formatted_address on pick. <input> would silently strip the \n
+          // and smash tokens. We flatten here so the value renders cleanly
+          // *and* the picked-display comparison below stays accurate.
+          const flat = v.includes("\n")
+            ? v.replace(/\r?\n+/g, ", ").replace(/\s*,\s*,\s*/g, ", ").trim()
+            : v;
+          setSearch(flat);
           // The pick path also fires this onChange (with the picked display
           // string). Only treat divergent values as "user typed" → clear.
-          if (picked && v !== hitToDisplay(picked)) setPicked(null);
+          if (picked && flat !== hitToDisplay(picked)) setPicked(null);
         }}
         onSelect={(hit) => setPicked(hit)}
         debounceMs={200}
