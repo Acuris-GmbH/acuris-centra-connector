@@ -19,6 +19,16 @@ const COUNTRIES = [
   { code: "fin", label: "Finland" },
 ];
 
+// Country-specific placeholder examples. Each is verified to return a
+// rooftop match from the production ref DB — picked so the demo never
+// embarrasses with a partial match in the screenshot.
+const EXAMPLE_ADDRESS: Record<string, string> = {
+  usa: "1600 Pennsylvania Ave NW, Washington, DC 20500",
+  deu: "Marienplatz 8, 80331 München",
+  nld: "Stadhouderskade 78, 1072 AE Amsterdam",
+  fin: "Mannerheimintie 1, 00100 Helsinki",
+};
+
 export default function Checkout() {
   const [country, setCountry] = useState("deu");
   const [search, setSearch] = useState("");
@@ -83,7 +93,7 @@ export default function Checkout() {
             onSelect={(hit) => setPicked(hit)}
             debounceMs={200}
             minQueryLength={3}
-            placeholder="Friedrichstraße 43, 10117 Berlin"
+            placeholder={"e.g. " + (EXAMPLE_ADDRESS[country] || EXAMPLE_ADDRESS.deu)}
           />
         </div>
 
