@@ -40,7 +40,7 @@ export default function Checkout() {
   return (
     <div className="page">
       <main className="card">
-        <div className="brand">ACURIS</div>
+        <div className="brand">ACURIS × CENTRA</div>
         <h1>Demo checkout</h1>
         <p className="lede">
           Start typing an address — suggestions come from Acuris (proxied by
