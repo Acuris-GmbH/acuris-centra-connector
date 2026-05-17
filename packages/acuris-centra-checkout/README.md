@@ -14,6 +14,31 @@ npm install @acuris-geo/centra-checkout
 
 `react` and `react-dom` are peer dependencies (`^18` or `^19`).
 
+## Use with AI coding agents
+
+If you build with Claude Code, Cursor, GitHub Copilot, OpenCode, Codex,
+Gemini CLI, or any other tool that supports
+[Agent Skills](https://agentskills.io), install the Acuris agent
+context — your assistant gets the correct component props
+(`minQueryLength`, not `minLength`; the typeahead-enabled country
+set; the validate-on-submit pattern; how to keep the API key
+server-side), plus recipes for Centra, commercetools, SCAYLE, and the
+five most common vendor migrations (libAddressDoctor, Loqate, Experian
+QAS, Melissa, Smarty). The bundled `acuris-eudi` skill covers the EUDI
+Wallet Verifier (OID4VP / SD-JWT VC) too. Each skill auto-activates
+only when your task matches its area.
+
+```bash
+# Claude Code (self-hosted marketplace today; official listing pending review):
+/plugin marketplace add Acuris-GmbH/acuris-agent-context
+/plugin install acuris@acuris-plugins
+
+# Cursor, Copilot, Codex, OpenCode, Gemini CLI, Kiro, Goose, others:
+npx skills add Acuris-GmbH/acuris-agent-context
+```
+
+Source: <https://github.com/Acuris-GmbH/acuris-agent-context> · Docs: <https://acuris-gmbh.github.io/acuris-agent-context/>
+
 ## Security model
 
 **Do not put an Acuris API key in the browser.** This package never calls
