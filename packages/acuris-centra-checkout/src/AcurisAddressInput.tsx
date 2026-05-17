@@ -1,15 +1,91 @@
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import type { SuggestionHit } from "@acuris-geo/av-sdk";
 import { useAcurisSuggest } from "./useAcurisSuggest.js";
 import type { AcurisAddressInputProps } from "./types.js";
 
 /**
- * Controlled input with Acuris-powered typeahead. Renders an `<input>` plus
- * an absolutely-positioned `<ul>` of suggestions; bring your own CSS.
+ * Default styles for the suggestions dropdown. Injected once per page on
+ * mount so the component is visible out-of-the-box in environments with
+ * CSS resets (Tailwind preflight, modern.css, vanilla Next.js).
  *
- * Architecture note: the component never touches Acuris directly. It calls
- * `endpoints.suggest` on _your_ backend, which proxies to api.acuris-geo.com
- * with the API key attached server-side.
+ * All selectors use :where(...) so they have zero specificity — any
+ * consumer CSS (via suggestionsClassName, a custom renderSuggestion, or
+ * a sitewide stylesheet) wins without needing !important.
+ *
+ * To opt out entirely, set data-acuris-default-styles="off" on the root
+ * <html> element before the component mounts (e.g. in your <head>).
+ */
+const DEFAULT_STYLES_ID = "acuris-centra-checkout-default-styles";
+const DEFAULT_STYLES = `
+:where(html:not([data-acuris-default-styles="off"]) [data-acuris-suggestions]) {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  margin-top: 4px;
+  overflow: hidden;
+  max-height: 320px;
+  overflow-y: auto;
+}
+:where(html:not([data-acuris-default-styles="off"]) [data-acuris-suggestions] li) {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #111111;
+  font-size: 14px;
+  line-height: 1.4;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+:where(html:not([data-acuris-default-styles="off"]) [data-acuris-suggestions] li:first-child) {
+  border-top: 0;
+}
+:where(html:not([data-acuris-default-styles="off"]) [data-acuris-suggestions] li[aria-selected="true"]),
+:where(html:not([data-acuris-default-styles="off"]) [data-acuris-suggestions] li:hover) {
+  background: rgba(0, 0, 0, 0.06);
+}
+:where(html:not([data-acuris-default-styles="off"]) [data-acuris-suggestions] li[data-acuris-state="loading"]) {
+  color: #666666;
+  font-style: italic;
+  cursor: default;
+}
+@media (prefers-color-scheme: dark) {
+  :where(html:not([data-acuris-default-styles="off"]) [data-acuris-suggestions]) {
+    background: #1a1a1a;
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+  :where(html:not([data-acuris-default-styles="off"]) [data-acuris-suggestions] li) {
+    color: #f0f0f0;
+    border-top-color: rgba(255, 255, 255, 0.06);
+  }
+  :where(html:not([data-acuris-default-styles="off"]) [data-acuris-suggestions] li[aria-selected="true"]),
+  :where(html:not([data-acuris-default-styles="off"]) [data-acuris-suggestions] li:hover) {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+`;
+
+function injectDefaultStyles(): void {
+  if (typeof document === "undefined") return;
+  if (document.getElementById(DEFAULT_STYLES_ID)) return;
+  const el = document.createElement("style");
+  el.id = DEFAULT_STYLES_ID;
+  el.textContent = DEFAULT_STYLES;
+  document.head.appendChild(el);
+}
+
+/**
+ * Controlled input with Acuris-powered typeahead. Renders an `<input>`
+ * plus an absolutely-positioned `<ul>` of suggestions.
+ *
+ * As of 0.1.2 the dropdown ships with sensible default styles (white
+ * background, dark text, hover state, dark-mode variant) so it works
+ * out-of-the-box in modern CSS-reset environments. Customize via
+ * `suggestionsClassName` + `renderSuggestion`, or opt out entirely by
+ * setting `data-acuris-default-styles="off"` on the root `<html>` tag.
+ *
+ * Architecture note: the component never touches Acuris directly. It
+ * calls `endpoints.suggest` on _your_ backend, which proxies to
+ * api.acuris-geo.com with the API key attached server-side.
  */
 export const AcurisAddressInput = forwardRef<HTMLInputElement, AcurisAddressInputProps>(
   function AcurisAddressInput(props, ref) {
@@ -30,6 +106,11 @@ export const AcurisAddressInput = forwardRef<HTMLInputElement, AcurisAddressInpu
 
     const [isOpen, setIsOpen] = useState(false);
     const [highlight, setHighlight] = useState(-1);
+
+    useEffect(() => {
+      injectDefaultStyles();
+    }, []);
+
     const { suggestions, isLoading } = useAcurisSuggest({
       endpoint: endpoints.suggest,
       country,
