@@ -18,6 +18,32 @@ You also need an Acuris API key — get one at
 [acuris-geo.com/acuris-pricing](https://acuris-geo.com/acuris-pricing/). The
 SDK reads `process.env.ACURIS_API_KEY` if no `apiKey` is passed.
 
+## Use with AI coding agents
+
+If you build with Claude Code, Cursor, GitHub Copilot, OpenCode, Codex,
+Gemini CLI, or any other tool that supports
+[Agent Skills](https://agentskills.io), install the Acuris agent
+context — your assistant gets the correct SDK shape, the right headers
+(`X-Acuris-Key`, not `Authorization: Bearer`), ISO-3 lowercase country
+codes, the typed error hierarchy, and a library of recipes
+(autocomplete, validation, forward/reverse geocoding, batch cleanup,
+Next.js proxy routes, the Centra/commercetools/SCAYLE storefront
+integrations, and migrations from libAddressDoctor, Loqate, Experian
+QAS, Melissa, and Smarty). The bundled `acuris-eudi` skill covers the
+EUDI Wallet Verifier (OID4VP / SD-JWT VC) too. Each skill auto-activates
+only when your task matches its area.
+
+```bash
+# Claude Code (self-hosted marketplace today; official listing pending review):
+/plugin marketplace add Acuris-GmbH/acuris-agent-context
+/plugin install acuris@acuris-plugins
+
+# Cursor, Copilot, Codex, OpenCode, Gemini CLI, Kiro, Goose, others:
+npx skills add Acuris-GmbH/acuris-agent-context
+```
+
+Source: <https://github.com/Acuris-GmbH/acuris-agent-context> · Docs: <https://acuris-gmbh.github.io/acuris-agent-context/>
+
 ## Quick start
 
 ```ts
