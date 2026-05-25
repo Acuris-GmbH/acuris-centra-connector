@@ -14,6 +14,7 @@ const ENDPOINTS = {
 // Match the country set on the acuris-geo.com homepage demo.
 const COUNTRIES = [
   { code: "usa", label: "United States" },
+  { code: "gbr", label: "United Kingdom" },
   { code: "deu", label: "Germany" },
   { code: "nld", label: "Netherlands" },
   { code: "fin", label: "Finland" },
@@ -25,6 +26,7 @@ const COUNTRIES = [
 // embarrasses with a partial match in the screenshot.
 const EXAMPLE_ADDRESS: Record<string, string> = {
   usa: "1600 Pennsylvania Ave NW, Washington, DC 20500",
+  gbr: "10 Downing Street, London SW1A 2AA",
   deu: "Marienplatz 8, 80331 München",
   nld: "Stadhouderskade 78, 1072 AE Amsterdam",
   fin: "Mannerheimintie 1, 00100 Helsinki",
