@@ -6,8 +6,24 @@ import {
   type SuggestionHit,
 } from "@acuris-geo/av-sdk";
 
+// UK PAF lives on its own satellite (paf.acuris-geo.com) — sales-handled,
+// separate commercial SKU. Same API key works on both (the satellite
+// delegates auth to the main box via HMAC). Two cached clients so each
+// keep-alive pool stays warm to its own host.
 let _client: AcurisClient | null = null;
-function client(): AcurisClient {
+let _pafClient: AcurisClient | null = null;
+function client(country?: string): AcurisClient {
+  if ((country || "").toLowerCase() === "gbr") {
+    if (!_pafClient) {
+      _pafClient = new AcurisClient({
+        apiKey: process.env.ACURIS_API_KEY,
+        baseUrl: "https://paf.acuris-geo.com",
+        timeoutMs: 4000,
+        userAgent: "centra-storefront-example/0.1.0",
+      });
+    }
+    return _pafClient;
+  }
   if (!_client) {
     _client = new AcurisClient({
       apiKey: process.env.ACURIS_API_KEY,
@@ -38,7 +54,7 @@ export default async function handler(
     return;
   }
   try {
-    const suggestions = await suggestAddress(client(), q, { country, limit, state });
+    const suggestions = await suggestAddress(client(country), q, { country, limit, state });
     res.status(200).json({ suggestions });
   } catch (err) {
     if (err instanceof AcurisError) {
