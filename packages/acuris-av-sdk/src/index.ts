@@ -20,6 +20,22 @@ export { validateAddress } from "./endpoints/validate.js";
 export { geocodeAddress } from "./endpoints/geocode.js";
 export { reverseGeocode } from "./endpoints/reverseGeocode.js";
 export { suggestAddress } from "./endpoints/suggest.js";
+export { postcodeLookup } from "./endpoints/postcodeLookup.js";
+export { emailValidate } from "./endpoints/emailValidate.js";
+export { emailValidateBatch } from "./endpoints/emailValidateBatch.js";
+export { validatePhone } from "./endpoints/validatePhone.js";
+export { validatePhoneBatch } from "./endpoints/validatePhoneBatch.js";
+export { phoneMatch } from "./endpoints/phoneMatch.js";
+
+export type {
+  PhoneValidateOptions,
+  PhoneVerdict,
+  PhoneValidationResult,
+  PhoneValidateBatchResult,
+  PhoneMatchType,
+  PhoneMatchResult,
+  PhoneMatchOptions,
+} from "./types.js";
 
 export {
   AcurisError,
@@ -43,12 +59,20 @@ export type {
   AddressInput,
   ClientOptions,
   CountryCode,
+  EmailDeliverability,
+  EmailValidateBatchOptions,
+  EmailValidateBatchResult,
+  EmailValidateOptions,
+  EmailValidationResult,
   FieldedAddressInput,
   GeocodeOptions,
   GeocodingResult,
   MatchComponents,
   MatchDetails,
   MatchType,
+  PostcodeLookupAddress,
+  PostcodeLookupOptions,
+  PostcodeLookupResult,
   ReverseGeocodeOptions,
   ReverseGeocodingHit,
   ReverseGeocodingResult,

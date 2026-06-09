@@ -205,3 +205,152 @@ export interface ClientOptions {
   /** User-Agent suffix appended after `acuris-av-sdk/<version>`. */
   userAgent?: string;
 }
+
+/* --- /postcode-lookup (UK PAF-backed) ----------------------------------- */
+
+export interface PostcodeLookupOptions {
+  /** ISO-3166 country (currently UK-only — pass "gbr"). */
+  country?: string;
+  timeoutMs?: number;
+  maxRetries?: number;
+  signal?: AbortSignal;
+}
+
+export interface PostcodeLookupAddress {
+  street: string;
+  house_number: string;
+  building_name?: string;
+  organisation_name?: string;
+  dependent_street?: string;
+  city: string;
+  postcode: string;
+  county?: string;
+  udprn?: string;
+  uprn?: string;
+  lat?: number;
+  lng?: number;
+  accuracy_type?: "rooftop" | "postcode";
+}
+
+export interface PostcodeLookupResult {
+  postcode: string;
+  country: string;
+  count: number;
+  addresses: PostcodeLookupAddress[];
+  validation_credits_remaining?: number;
+  geocode_credits_remaining?: number;
+}
+
+/* --- /email-validate (+ batch) ----------------------------------------- */
+
+export type EmailDeliverability =
+  | "deliverable"
+  | "risky"
+  | "undeliverable"
+  | "unknown";
+
+export interface EmailValidateOptions {
+  timeoutMs?: number;
+  maxRetries?: number;
+  signal?: AbortSignal;
+}
+
+export interface EmailValidationResult {
+  email: string;
+  deliverable: EmailDeliverability;
+  format_valid: boolean;
+  domain_has_mx: boolean | null;
+  is_disposable: boolean;
+  is_role: boolean;
+  is_free: boolean;
+  did_you_mean: string | null;
+  mx_record: string | null;
+  reasons: string[];
+  email_credits_remaining?: number;
+  validation_credits_remaining?: number;
+  geocode_credits_remaining?: number;
+}
+
+export interface EmailValidateBatchOptions extends EmailValidateOptions {}
+
+export interface EmailValidateBatchResult {
+  count: number;
+  results: EmailValidationResult[];
+  email_credits_remaining?: number;
+  email_quota_limit?: number;
+  email_quota_used?: number;
+  email_quota_remaining?: number;
+}
+
+
+// ---------- Phone validation (offline Tier 1) ----------
+
+export interface PhoneValidateOptions {
+  /** Default region (ISO-3166 alpha-2, e.g. "US") for numbers without a "+". */
+  country?: string;
+  /** 2-letter language for carrier/location text ("de" -> "Deutschland"). */
+  lang?: string;
+  timeoutMs?: number;
+  maxRetries?: number;
+  signal?: AbortSignal;
+}
+
+export type PhoneVerdict = "valid" | "possible" | "invalid" | "unknown";
+
+export interface PhoneValidationResult {
+  phone: string;
+  valid: boolean;
+  verdict: PhoneVerdict;
+  score: number;
+  is_possible: boolean;
+  e164: string | null;
+  international: string | null;
+  national: string | null;
+  tel_uri: string | null;
+  country_code: number | null;
+  region: string | null;
+  line_type: string | null;
+  can_receive_sms: boolean;
+  carrier: string | null;
+  location: string | null;
+  timezones: string[];
+  is_premium_rate: boolean;
+  is_toll_free: boolean;
+  is_short_number: boolean;
+  is_emergency: boolean;
+  reasons: string[];
+  phone_credits_remaining?: number;
+  validation_credits_remaining?: number;
+  geocode_credits_remaining?: number;
+}
+
+export interface PhoneValidateBatchResult {
+  count: number;
+  results: PhoneValidationResult[];
+  phone_credits_remaining?: number;
+  phone_quota_limit?: number;
+  phone_quota_used?: number;
+  phone_quota_remaining?: number;
+}
+
+export type PhoneMatchType =
+  | "exact_match"
+  | "nsn_match"
+  | "short_nsn_match"
+  | "no_match"
+  | "not_a_number";
+
+export interface PhoneMatchResult {
+  a: string;
+  b: string;
+  match: PhoneMatchType;
+  same_number: boolean;
+  phone_credits_remaining?: number;
+}
+
+export interface PhoneMatchOptions {
+  country?: string;
+  timeoutMs?: number;
+  maxRetries?: number;
+  signal?: AbortSignal;
+}
