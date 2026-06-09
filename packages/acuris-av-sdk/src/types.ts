@@ -318,6 +318,13 @@ export interface PhoneValidationResult {
   is_toll_free: boolean;
   is_short_number: boolean;
   is_emergency: boolean;
+  short_number_cost: string | null;
+  national_number: string | null;
+  area_code: string | null;
+  can_be_internationally_dialled: boolean;
+  is_vanity: boolean;
+  valid_for_input_region: boolean | null;
+  dialling: { from: string; number: string } | null;
   reasons: string[];
   phone_credits_remaining?: number;
   validation_credits_remaining?: number;
