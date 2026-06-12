@@ -73,6 +73,7 @@ export class AcurisClient {
       Accept: "application/json",
       "X-Acuris-Key": this.apiKey,
       "User-Agent": this.userAgent,
+      "X-Acuris-Client": this.userAgent,
     };
     const init: RequestInit = { method, headers };
     if (opts.body !== undefined) {

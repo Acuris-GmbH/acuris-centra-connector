@@ -119,6 +119,52 @@ const hits = await suggestAddress(client, "Friedrichstr", {
 });
 ```
 
+### `postcodeLookup(client, postcode, options?)` (UK PAF)
+
+Look up every address at a UK Royal Mail postcode. Returns the building
+list with rooftop coordinates where PAF provides them.
+
+```ts
+const r = await postcodeLookup(client, "SW1A 2AA");
+// → { count: 1, addresses: [{ street: "DOWNING STREET",
+//      house_number: "10", city: "LONDON", lat: 51.503541, ... }] }
+```
+
+Charges 1 `validation_credit` per call (any number of addresses returned).
+
+### `emailValidate(client, email, options?)`
+
+Validate a single email address. MVP checks: format, DNS MX (with A-record
+fallback), disposable / role / free-provider flags, did-you-mean suggestion
+for common typos.
+
+```ts
+const r = await emailValidate(client, "user@gmial.com");
+// → { deliverable: "risky", did_you_mean: "user@gmail.com", ... }
+```
+
+Charges 1 `email_credit` per call — a separate pool from address validation
+and geocoding, so the same plan honestly includes "X address validations
+**AND** X email verifications".
+
+### `emailValidateBatch(client, emails[], options?)`
+
+Validate up to 1,000 emails in one synchronous request. Atomic billing —
+either all N succeed or none do (HTTP 403 `insufficient_email_credits`
+if the key doesn't have N credits available).
+
+```ts
+const r = await emailValidateBatch(client, [
+  "a@gmail.com",
+  "b@yahoo.com",
+  "c@mailinator.com",
+]);
+// → { count: 3, results: [...], email_quota_remaining: 247 }
+```
+
+Server-side per-domain DNS cache (5 min TTL) means a batch of 1,000 emails
+sharing 30 unique domains issues ~30 lookups, not 1,000.
+
 ## Errors
 
 All errors extend `AcurisError`:
